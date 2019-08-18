@@ -8,10 +8,11 @@ absent (missing X% or more of school days) for targeted interventions by guidanc
 
 
 # Installation
-1. Clone or download this repo 
+1. Clone or download this repo
 2. Once installed, In the terminal go to the directory of this file "new-visions-app" 
-3. Type the command npm install
-$. Then npm start
+3. Execute the command "npm install" in the terminal
+4. Execute the command "npm start" in the terminal
 
 # How to use the Dashboard
 Type in a number in the Input box labled "Set Attendance Threshold:". The table will only show the students that  attendance percentage is below the number inputed by the user.
+
