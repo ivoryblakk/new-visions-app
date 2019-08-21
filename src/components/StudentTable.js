@@ -7,7 +7,6 @@ const StudentTable =({students, loading, setStudentCard, attendanceThreshold }) 
         return <h2>Loading...</h2>;
       }
 
-      let nullArray = new Array(students.length).fill(null);
       /*********************************************
        * linkNameToEmail
        * arg1: Object
@@ -24,33 +23,26 @@ const StudentTable =({students, loading, setStudentCard, attendanceThreshold }) 
       const viewProfile = (student)=>{
           setStudentCard( <StudentProfile student={student} />)
       }
-
-      /*********************************************
-       * compareTableWithNullArray
-       * returns: Boolean
-       * Behavior: Checks if the all the items in
-       * the function draw table were set to "null"
+      
+       /*********************************************
+       * fiterdStudents
+       * returns: filter the students that are above the 
+       * threshold
        **********************************************/
 
-      const compareTableWithNullArray = () =>{
-        let table = drawTable()
-        for( let i = 0; i < table.length; i++){
-          if(table[i] !== nullArray[i]){
-            return true
-          } 
-        }
-        return false
+      const fiterdStudents =() => {
+        return students.filter(student =>{
+         return Math.floor(student.attendancePercentage) <= attendanceThreshold
+        })
       }
+
        /*********************************************
-       * compareTableWithNullArray
-       * returns: Boolean
-       * Behavior: Checks if the all the items in
-       * the function draw table were set to "null"
+       * drawTable
+       * returns: JSX list of students
        **********************************************/
 
       const drawTable = ()=>{
-      const table = students.map(student => {
-          if( Math.floor(student.attendancePercentage) <= attendanceThreshold ){
+      const table = fiterdStudents().map(student => {
             return( <li key={student.studentId} className='list-group-item' style={{display:'flex',justifyContent:"space-between", textAlign:"center" }}>
             <div>{Math.floor(student.attendancePercentage) + '%'}  </div>
             <div>{linkNameToEmail({ name: `${student.lastName}, ${student.firstName}`}, student.email ) } </div>
@@ -58,7 +50,6 @@ const StudentTable =({students, loading, setStudentCard, attendanceThreshold }) 
             <div>{linkNameToEmail({name:student.guidanceCounselor}, student.guidanceCounselorEmail) }</div>
             <div><button onClick={()=> viewProfile(student)} >View Profile</button></div>
           </li>);
-          }else { return null }
       })
       return table;
       }
@@ -66,7 +57,7 @@ const StudentTable =({students, loading, setStudentCard, attendanceThreshold }) 
       return (
         <div  style={{overflowX:'hidden', overflowY: "scroll", height:"60vh"}} >
             <ul className='list-group mb-4'>
-              {!compareTableWithNullArray() ? <h2>{NOT_IN_RANGE_MESSAGE} </h2>: drawTable() }
+              { drawTable().length >0? drawTable():<h2> {NOT_IN_RANGE_MESSAGE} </h2>}
             </ul>
         </div>
       );
